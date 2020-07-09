@@ -1,7 +1,7 @@
 import os
 #import render_template
-
-from flask import Flask, session,request, render_template
+import requests
+from flask import Flask, session,request, render_template,jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -20,7 +20,6 @@ Session(app)
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
-
 
 @app.route("/")
 def index():
@@ -89,11 +88,16 @@ def books():
 @app.route('/askedbook/<b_name>',methods=["GET","POST"])
 def askedbook(b_name):
     name=session['username']
+    isbn=db.execute("SELECT isbn FROM books WHERE title=:b_name",{"b_name":b_name}).fetchone()
+    res=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "01mfvxQ38SGwk9fd3uwh2w", "isbns": isbn[0]})
+    data=res.json()
+    val1=data["books"][0]["work_ratings_count"]
+    val2=data["books"][0]["average_rating"]
     list2=db.execute("SELECT * FROM books WHERE title=:b_name",{"b_name":b_name}).fetchall()
     list3=db.execute("SELECT review FROM reviews WHERE username=:username AND b_name=:b_name",{"username":name,"b_name":b_name}).fetchone()
     list4=db.execute("SELECT stars FROM reviews WHERE username=:username AND b_name=:b_name",{"username":name,"b_name":b_name}).fetchone()
     db.commit()
-    return render_template("index9.html",value=list2,value2=list3,value3=list4)
+    return render_template("index9.html",value=list2,value2=list3,value3=list4,value4=val1,value5=val2)
 
 @app.route('/submit_review/<b_name>',methods=["GET","POST"])
 def submit_review(b_name):
@@ -110,11 +114,16 @@ def submit_review(b_name):
 @app.route('/change_review/<b_name>',methods=["GET","POST"])
 def change_review(b_name):
     name=session['username']
+    isbn=db.execute("SELECT isbn FROM books WHERE title=:b_name",{"b_name":b_name}).fetchone()
+    res=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "01mfvxQ38SGwk9fd3uwh2w", "isbns": isbn[0]})
+    data=res.json()
+    val1=data["books"][0]["work_ratings_count"]
+    val2=data["books"][0]["average_rating"]
     list2=db.execute("SELECT * FROM books WHERE title=:b_name",{"b_name":b_name}).fetchall()
     db.execute("DELETE FROM reviews WHERE b_name=:b_name AND username=:username",{"b_name":b_name,"username":name})
     #reviews.query.filter_by(id=b_).delete()
     db.commit()
-    return render_template("index11.html",value=list2)
+    return render_template("index11.html",value=list2,value4=val1,value5=val2)
 
 @app.route('/edit_review/<b_name>',methods=["GET","POST"])
 def edit_review(b_name):
@@ -127,3 +136,15 @@ def edit_review(b_name):
     list4=db.execute("SELECT stars FROM reviews WHERE username=:username AND b_name=:b_name",{"username":name,"b_name":b_name}).fetchone()
     db.commit()
     return render_template("index9.html",value=list2,value2=list3,value3=list4)
+
+@app.route("/api/<isbn>")
+def app_api(isbn):
+    book=db.execute("SELECT * FROM books WHERE isbn=:isbn_name",{"isbn_name":isbn}).fetchone()
+    if book is None:
+        return jsonify({"error":"book not found"}),404
+    return jsonify({
+        "title":book.title,
+        "author":book.author,
+        "year":book.year,
+        "isbn":book.isbn
+    })    
