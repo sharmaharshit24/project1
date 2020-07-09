@@ -20,6 +20,8 @@ background-image: url({{ url_for('static', filename='image/d5.jpg') }});
      <h3>  Author:  {{value[0][2]}}</h3>
      <h3>  ISBN no:  {{value[0][0]}} </h3>
      <h3>  Publication Year:  {{value[0][3]}}</h3>
+     <h3>  Ratings Count:{{value4}}</h3>
+     <h3>  Average Ratings:{{value5}}</h3>
      <h3> Edit your reviews</h3>
       <form action="{{url_for('edit_review', b_name=value[0][1])}}" method="post">
     <input type="number" min="1" max="5" name="star" placeholder="stars out of 5">

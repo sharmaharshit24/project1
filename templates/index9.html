@@ -20,6 +20,8 @@ background-image: url({{ url_for('static', filename='image/d5.jpg') }});
      <h3>  Author:  {{value[0][2]}}</h3>
      <h3>  ISBN no:  {{value[0][0]}} </h3>
      <h3>  Publication Year:  {{value[0][3]}}</h3>
+     <h3>  Ratings Count:{{value4}}</h3>
+     <h3>  Average Ratings:{{value5}}</h3>
     {%if (value3 is defined) and value3 and (value2 is defined) and value2%}
      <h3>  you have given:{{value3[0]}} stars</h3>
      <h3>  your review: {{value2[0]}}</h3>
