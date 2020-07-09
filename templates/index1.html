@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>title</title>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+         html { 
+  background: url({{ url_for('static', filename='image/abc3.jpg') }}) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+  body{
+background-image: url({{ url_for('static', filename='image/abc3.jpg') }});
+  }
+    input[type=text]{
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      margin-down:15px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+       box-sizing: border-box;
+
+    }
+     input[type=password]{
+       width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      margin-down:15px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+       box-sizing: border-box;
+    }
+    input[type=submit]{
+       width: 100%;
+      background-color: #7300e6;
+      color: white;
+      padding: 12px;
+      margin-top: 15px;
+      margin-down:15px;
+      border-radius: 20px;
+      border:none;
+    }
+    input[type=submit]:hover{
+      background-color: #4d0099;
+    }
+    .content {
+    border-radius: 5px;
+  background-color: #f2f2f2;
+  padding-left: 20px;
+  padding-right:20px;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  position:absolute;
+  top:200px;
+  left:500px;
+  right:500px;
+  background: rgba(255, 255, 255, 0.8);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.header {
+  padding: 5px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 20px;
+}   
+  </style>
+</head>
+<body>
+  <div class="header">
+  <h1>Welcome To Youreads</h1>
+  <p>Helps to pick the perfect book for you :)</p>
+</div>
+  <div class="content">
+    <h2 align="center">Sign in</h2>
+    <form action="{{url_for('login')}}" method="post">
+    <input type="text" name="username" placeholder="username or e-mail">
+    <input type="password" name="password" placeholder="password">
+    <input type="submit" value="login">
+    </form>
+   <p align="center"><a href="google.com">forgot password?</a></p>
+   <p align="center">or</p>
+   <p align="center">new here? <a href="{{url_for('registration')}}" color="black">register</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title>title</title>
+  <style> 
+  body{
+background-image: url({{ url_for('static', filename='image/d5.jpg') }});
+  }
+  .abc{
+    margin-left: 400px;
+    text-decoration-color: white;
+  }
+  </style>
+</head>
+<body>
+<div align="center">
+    <img src=({{ url_for('static', filename='image/create.jpg') }}) width="200px" height="200px">
+</div>
+<div class="abc">
+     <h3>  Title:  {{value[0][1]}} </h3> 
+     <h3>  Author:  {{value[0][2]}}</h3>
+     <h3>  ISBN no:  {{value[0][0]}} </h3>
+     <h3>  Publication Year:  {{value[0][3]}}</h3>
+    {%if (value3 is defined) and value3 and (value2 is defined) and value2%}
+     <h3>  you have given:{{value3[0]}} stars</h3>
+     <h3>  your review: {{value2[0]}}</h3>
+     <form action="{{url_for('change_review', b_name=value[0][1])}}" method="post">
+       <input type="submit" value="Edit">
+    {%elif (value3 is defined) and value3 %}
+      <h3>  you have given:{{value3[0]}} stars</h3>
+      <h3> Edit your review</h3>
+      <form action="{{url_for('change_review', b_name=value[0][1])}}" method="post">
+       <input type="submit" value="Edit">
+    {%else%} 
+     <h3> You have not given any reviews</h3>
+      <form action="{{url_for('submit_review', b_name=value[0][1])}}" method="post">
+    <input type="number" min="1" max="5" name="star" placeholder="stars out of 5">
+    <input type="text" name="review" placeholder="write review here..">
+    <input type="submit" value="submit">
+    {%endif%}  
+</div>
+</body>
+</html>

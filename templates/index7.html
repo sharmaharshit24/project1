@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>title</title>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+  
+    body{
+   background-color: #bfbcbb;
+  }
+    div.menu{
+        background-color: #333;
+    }
+    div.menu a{
+        display: inline-block;
+        color: white;
+        padding: 15px;
+        text-align:center;
+        text-decoration: none;
+        font-family:"Comic Sans MS", cursive, sans-serif;
+    }
+    div.menu a:hover{
+        background-color: #777;
+    }
+  
+    </style>
+</head>
+<body>
+    <div class="menu">
+    <a href="abc">Services</a>
+    <a href="abc">Help</a>
+    <a href="{{url_for('logout')}}">Logout</a>  
+    </div>
+    <h1>   </h1>
+    <h1>   </h1>
+   <h1 align="center">Any of these books?</h1>
+    {% for list in list1 %}
+      {% for list0 in list %}
+       <ul>
+       <h3 color=black>  <li><a href="{{ url_for('askedbook', b_name=list0)}}">{{list0}}</a></li> </h3>
+      </ul>   
+      {% endfor %}
+    {% endfor %}
+</body>
+</html>
